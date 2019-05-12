@@ -1,0 +1,22 @@
+<html>
+<head>
+</head>
+<script>
+var myVar = setInterval(setColor, 1000);
+var i=5;
+function setColor() {
+  var x = document.body;
+  x.style.backgroundColor = x.style.backgroundColor == "yellow" ? "pink" : "yellow";
+  document.getElementById("cooldown").innerHTML=i;
+  i--;
+}
+
+function stopColor() {
+  clearInterval(myVar);
+}
+
+</script>
+<body>
+<div id="cooldown"></div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<html>
+<header>
+  <title>Webcam Central Media Code</title>
+<style>
+#videoElement
+{
+    transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */
+}
+</style>
+</header>
+<body>
+<canvas width="640" height="480" id="c"></canvas>
+<video id=videoElement autoplay></video>
+</body>
+<script>
+const constraints = {
+  video: true
+};
+const video = document.querySelector('video');
+navigator.mediaDevices.getUserMedia(constraints, connect, error).then((stream) => {video.srcObject = stream});
+
+    function connect(stream) {
+
+        var video = document.getElementById("videoElement");
+            video.src = window.URL ? window.URL.createObjectURL(stream) : stream;
+            video.play();
+
+        var canvas = document.getElementById("c"); 
+    }
+	function error(e) { console.log(e); }
+</script>
+</html>

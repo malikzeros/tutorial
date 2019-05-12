@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+var video = document.querySelector('video');
+video.autoplay = true; // Make sure we're not frozen!
+
+// Note: not using vendor prefixes!
+navigator.getUserMedia({video: true}, function(stream) {video.src = window.URL.createObjectURL(stream);}, function(e) {console.error(e);});
+var canvas = document.querySelector('canvas');
+ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+var url = canvas.toDataURL('image/webp', 1); // Second param is quality.
+var rafId;
+var frames = [];
+var CANVAS_WIDTH = canvas.width;
+var CANVAS_HEIGHT = canvas.height;
+
+function drawVideoFrame(time) {
+  rafId = requestAnimationFrame(drawVideoFrame);
+  ctx.drawImage(video, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  frames.push(canvas.toDataURL('image/webp', 1));
+};
+
+rafId = requestAnimationFrame(drawVideoFrame); // Note: not using vendor prefixes!
+function stop() {
+  cancelAnimationFrame(rafId);  // Note: not using vendor prefixes!
+
+  // 2nd param: framerate for the video file.
+  var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+
+  var video = document.createElement('video');
+  video.src = window.URL.createObjectURL(webmBlob);
+
+  document.body.appendChild(video);
+}
+</script>
+</head>    
+<body>
+    <canvas width="640" height="480" id="c"></canvas>
+    <input type="button" value="RECORD" onClick="drawVideoFrame(50)"/>
+    <input type="button" value="SAVE" onClick="stop()/>
+    <video id="my_video" width="640" height="480"/>
+</body>
+</html>
